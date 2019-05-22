@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Chat com nodejs e socket.io</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <div id="user">
+      <p id="username"></p>
+      <a id="btn-sair" href="#!">Sair</a>
+    </div>
+
+    <div class="messages"></div>
+    <form id="chat">
+      <input
+        type="text"
+        name="message"
+        placeholder="Mensagem"
+        autocomplete="off"
+      />
+      <button id="enviar-msg" type="submit">Enviar</button>
+    </form>
+
+    <script>
+      var socket = io("http://localhost:3001");
+      var username = localStorage.getItem("@chat:username");
+
+      if (!username) {
+        window.location.href = "index.html";
+      }
+      $("#username").append(username);
+
+      function renderMessage(message) {
+        var classe = "";
+        if (message.username === username) {
+          classe = "msgRight";
+        }
+
+        $(".messages").append(
+          '<div class="message ' +
+            classe +
+            '"><span>' +
+            message.username +
+            "</span> <p>" +
+            message.message +
+            "</p></div>"
+        );
+
+        var divMsg = $(".messages");
+        divMsg.prop("scrollTop", divMsg.prop("scrollHeight"));
+      }
+
+      socket.on("previousMessages", function(messages) {
+        for (message of messages) {
+          renderMessage(message);
+        }
+      });
+
+      socket.on("receivedMessage", function(message) {
+        renderMessage(message);
+      });
+
+      $("#chat").submit(function(event) {
+        event.preventDefault();
+        var message = $("input[name=message]").val();
+
+        if (message.length) {
+          var messageObject = {
+            message: message,
+            username: username
+          };
+          renderMessage(messageObject);
+          socket.emit("sendMessage", messageObject);
+        }
+
+        $("input[name=message]").val("");
+      });
+
+      $("#btn-sair").click(function() {
+        localStorage.removeItem("@chat:username");
+        window.location.href = "index.html";
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Chat com nodejs e socket.io</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="./css/login.css" />
+    <link rel="manifest" href="./manifest.json" />
+  </head>
+  <body>
+    <div id="login">
+      <p>Chatzinho maroto</p>
+      <input type="text" id="name" placeholder="Digite seu nome" />
+      <button type="submit" id="btn-entrar">Entrar</button>
+    </div>
+    <script>
+      $("#btn-entrar").click(function(event) {
+        event.preventDefault();
+        var username = $("#name").val();
+        if (username) {
+          localStorage.setItem("@chat:username", username);
+          window.location.href = "chat.html";
+        } else {
+          alert("Digite o nome de usuario");
+        }
+      });
+    </script>
+  </body>
+</html>
