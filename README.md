@@ -1,24 +1,25 @@
-# App simples de chat com Nodejs Express e Socket.io
+# A simple chat built with Nodejs, Express and Socket.io
 
-## Instruções de uso:
-#### Depois de baixar ou clonar, instale as dependencias
+## Instructions:
+#### After Download and extract, install dependencies with:
 
-### Usando npm
+### npm
 `
 npm install
 `
+### Or
 
-### Usando yarn
+### yarn
 `
 yarn
 `
 
-### Rode no seu terminal o seguinte comando
+### Run in your terminal
 `
 node server.js
 `
 
-### Acesse no navegador
+### Access from localhost
 `
 http://localhost:3001
 `
